@@ -1,0 +1,17 @@
+.create_group_container {
+  background-color: #ffffff;
+  width: 90vw;
+  max-width: 400px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.colors_container {
+  border: 0.5px #808080 solid;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  grid-template-rows: repeat(2, 60x);
+}

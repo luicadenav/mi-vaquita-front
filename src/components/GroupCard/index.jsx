@@ -2,7 +2,7 @@ import styles from './groupCard.module.css';
 
 const GroupCard = ({ groupData }) => {
   return (
-    <div className={styles.main}>
+    <div className={styles.card_container}>
       <div>
         <img src='/images/logo_groups.svg' alt='logo mi vaquita' />
       </div>
