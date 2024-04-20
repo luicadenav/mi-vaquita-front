@@ -1,8 +1,8 @@
-const BASE_URL = ' http://localhost:3000/api';
+const BASE_URL = ' http://localhost:3000/';
 
 export async function getGroups() {
   try {
-    const response = await fetch(`${BASE_URL}/groups`);
+    const response = await fetch(`${BASE_URL}groups/`);
     if (!response.ok) {
       throw new Error('server error - obtener los grupos');
     }

@@ -61,7 +61,7 @@ const CreateGroup = ({ onClose, groupsList, fetchData }) => {
           setColor(selectedColor);
         }
 
-        const resp = await fetch('http://localhost:3000/api/create', {
+        const resp = await fetch('http://localhost:3000/groups/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
