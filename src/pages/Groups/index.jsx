@@ -1,33 +1,37 @@
 import { useState, useEffect } from 'react';
-import GroupsList from '../../components/GroupsList';
-import CreateGroup from '../../components/CreateGroup';
-import Modal from '../../components/Modal';
-import styles from './groups.module.css';
+import GroupsList from '../../components/GroupList';
+import CreateGroup from '../../components/CreateGroup.jsx';
+import Modal from '../../components/Modal.jsx';
 import { getGroups } from '../../services/GroupsApiService';
 
 const Groups = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
   const [groups, setGroups] = useState([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const GroupsData = await getGroups();
-        setGroups(GroupsData);
-      } catch (error) {
-        console.error('Error al obtener los grupos:', error);
-      }
+  const fetchData = async () => {
+    try {
+      const GroupsData = await getGroups();
+      setGroups(GroupsData);
+    } catch (error) {
+      console.error('Error al obtener los grupos:', error);
     }
+  };
+
+  useEffect(() => {
     fetchData();
-  }, [groups]);
+  }, []);
 
   return (
-    <div className={styles.main}>
+    <div>
       <Modal
         isOpenModal={openModalForm}
         onClose={() => setOpenModalForm(false)}
       >
-        <CreateGroup onClose={() => setOpenModalForm(false)} />
+        <CreateGroup
+          groupsList={groups}
+          onClose={() => setOpenModalForm(false)}
+          fetchData={fetchData}
+        />
       </Modal>
 
       <button onClick={() => setOpenModalForm(true)}>Nuevo grupo</button>

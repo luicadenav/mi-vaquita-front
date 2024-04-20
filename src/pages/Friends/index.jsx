@@ -1,8 +1,6 @@
-import styles from './friends.module.css';
-
 const Friends = () => {
   return (
-    <div className='album-content'>
+    <div>
       <h2>Friends</h2>
     </div>
   );

@@ -1,8 +1,6 @@
-import styles from './groupCard.module.css';
-
 const GroupCard = ({ groupData }) => {
   return (
-    <div className={styles.card_container}>
+    <div className='flex justify-start items-center min-w-[300px] shadow-md mx-auto p-6'>
       <div>
         <img src='/images/logo_groups.svg' alt='logo mi vaquita' />
       </div>

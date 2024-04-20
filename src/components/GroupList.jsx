@@ -1,10 +1,8 @@
-import GroupCard from '../GroupCard';
-
-import styles from './groupsList.module.css';
+import GroupCard from './GroupCard';
 
 const GroupsList = ({ groupsList }) => {
   return (
-    <div className={styles.list_container}>
+    <div className='flex flex-wrap'>
       {groupsList?.map((group) => (
         <GroupCard key={group.id} groupData={group} />
       ))}
