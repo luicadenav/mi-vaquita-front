@@ -1,15 +1,15 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <nav>
-      <ul className='flex justify-between mt-6'>
+      <ul className="flex justify-between mt-6">
         <li>
           <NavLink
-            to='/friends'
+            to="/friends"
             className={({ isActive }) =>
-              isActive ? 'text-secondary-yellow font-bold' : ''
+              isActive && "text-secondary-yellow font-bold"
             }
           >
             Amigos
@@ -17,9 +17,9 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/Expenses'
+            to="/Expenses"
             className={({ isActive }) =>
-              isActive ? 'text-secondary-yellow font-bold' : ''
+              isActive && "text-secondary-yellow font-bold"
             }
           >
             Gastos
@@ -27,9 +27,9 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/groups'
+            to="/groups"
             className={({ isActive }) =>
-              isActive ? 'text-secondary-yellow font-bold' : ''
+              isActive && "text-secondary-yellow font-bold"
             }
           >
             Grupos

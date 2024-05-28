@@ -1,29 +1,37 @@
-import { useRoutes, BrowserRouter } from 'react-router-dom';
-import Header from './components/Header';
-import './App.css';
-import Friends from './pages/Friends';
-import Expenses from './pages/Expenses';
-import Groups from './pages/Groups';
+import { useRoutes, BrowserRouter, useLocation } from "react-router-dom";
+import Header from "./components/Header";
+import "./App.css";
+import Friends from "./pages/Friends";
+import Expenses from "./pages/Expenses";
+import Groups from "./pages/Groups";
+import Login from "./pages/Login";
 
-const AppRoutes = () => {
+const App = () => {
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+
   const routes = useRoutes([
-    { path: '/', element: <Friends /> },
-    { path: '/friends', element: <Friends /> },
-    { path: '/expenses', element: <Expenses /> },
-    { path: '/groups', element: <Groups /> },
+    { path: "/", element: <Friends /> },
+    { path: "/login", element: <Login /> },
+    { path: "/friends", element: <Friends /> },
+    { path: "/expenses", element: <Expenses /> },
+    { path: "/groups", element: <Groups /> },
   ]);
-  return routes;
+
+  return (
+    <>
+      {!isLoginPage && <Header />}
+      {routes}
+    </>
+  );
 };
 
-function App() {
+const Root = () => {
   return (
     <BrowserRouter>
-      <>
-        <Header />
-        <AppRoutes />
-      </>
+      <App />
     </BrowserRouter>
   );
-}
+};
 
-export default App;
+export default Root;
