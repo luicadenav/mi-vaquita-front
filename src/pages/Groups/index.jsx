@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import GroupsList from "../../components/GroupList.jsx";
 import CreateGroup from "../../components/CreateGroup.jsx";
 import Modal from "../../components/Modal.jsx";
-import { getGroups } from "../../services/GroupsApiService";
+import { getGroups } from "../../services/groupsApiService";
 
 const Groups = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
