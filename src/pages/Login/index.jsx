@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import CustomInput from "../../components/CustomInput.jsx";
 import CustomButton from "../../components/CustomButton.jsx";
+import { login } from "../../services/authApiService.js";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [body, setBody] = useState({
     email: "",
-    pass: "",
+    password: "",
   });
 
   const handleInputChange = (e) => {
@@ -13,7 +16,11 @@ function Login() {
     setBody((body) => ({ ...body, [name]: value }));
   };
 
-  const handlePost = (params) => {};
+  const handlePost = async () => {
+    const response = await login(body);
+    sessionStorage.setItem("token", response.token);
+    navigate("/");
+  };
 
   return (
     <main className=" max-w-80  mx-auto my-20">
@@ -36,7 +43,7 @@ function Login() {
       <CustomInput
         className="mt-12"
         type="password"
-        name="pass"
+        name="password"
         placeholder="Contraseña"
         onChange={handleInputChange}
         maxLength="100"

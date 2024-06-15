@@ -5,17 +5,46 @@ import Friends from "./pages/Friends";
 import Expenses from "./pages/Expenses";
 import Groups from "./pages/Groups";
 import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
 
   const routes = useRoutes([
-    { path: "/", element: <Friends /> },
+    {
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <Friends />
+        </ProtectedRoute>
+      ),
+    },
     { path: "/login", element: <Login /> },
-    { path: "/friends", element: <Friends /> },
-    { path: "/expenses", element: <Expenses /> },
-    { path: "/groups", element: <Groups /> },
+    {
+      path: "/friends",
+      element: (
+        <ProtectedRoute>
+          <Friends />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/expenses",
+      element: (
+        <ProtectedRoute>
+          <Expenses />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/groups",
+      element: (
+        <ProtectedRoute>
+          <Groups />
+        </ProtectedRoute>
+      ),
+    },
   ]);
 
   return (
