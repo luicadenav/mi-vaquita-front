@@ -8,7 +8,7 @@ const Groups = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
   const [groups, setGroups] = useState([]);
 
-  const fetchData = async () => {
+  const fetchDataGroups = async () => {
     try {
       const GroupsData = await getGroups();
       setGroups(GroupsData);
@@ -18,7 +18,7 @@ const Groups = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchDataGroups();
   }, []);
 
   return (
@@ -30,7 +30,7 @@ const Groups = () => {
         <CreateGroup
           groupsList={groups}
           onClose={() => setOpenModalForm(false)}
-          fetchData={fetchData}
+          fetchDataGroups={fetchDataGroups}
         />
       </Modal>
 

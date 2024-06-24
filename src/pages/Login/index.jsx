@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [body, setBody] = useState({
     email: "",
     password: "",
@@ -17,9 +18,17 @@ function Login() {
   };
 
   const handlePost = async () => {
-    const response = await login(body);
-    sessionStorage.setItem("token", response.token);
-    navigate("/");
+    try {
+      const response = await login(body);
+      console.log("🚀 ~ handlePost ~ response:", response);
+
+      if (response.token) {
+        sessionStorage.setItem("token", response.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesion", error);
+    }
   };
 
   return (

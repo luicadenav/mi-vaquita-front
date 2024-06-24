@@ -5,6 +5,7 @@ import Friends from "./pages/Friends";
 import Expenses from "./pages/Expenses";
 import Groups from "./pages/Groups";
 import Login from "./pages/Login";
+import GroupDetail from "./pages/GroupDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -42,6 +43,14 @@ const App = () => {
       element: (
         <ProtectedRoute>
           <Groups />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/groups/:id",
+      element: (
+        <ProtectedRoute>
+          <GroupDetail />
         </ProtectedRoute>
       ),
     },

@@ -1,16 +1,22 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function getGroups() {
-  try {
-    const response = await fetch(`${BASE_URL}groups/`);
-    if (!response.ok) {
-      throw new Error("server error - obtener los grupos");
-    }
-    const data = await response.json();
-    console.log("🚀 ~ getGroups ~ data:", data);
-    return data;
-  } catch (error) {
-    console.error("Error en getGroups:", error);
-    throw error;
-  }
+  const response = await fetch(`${BASE_URL}groups/`, {
+    headers: {
+      authorization: `bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return await response.json();
+}
+
+export async function createGroup(body) {
+  const response = await fetch(`${BASE_URL}groups/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${sessionStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(body),
+  });
+  return await response.json();
 }

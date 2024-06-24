@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-//import styles from './addGroup.module.css';
+import { createGroup } from "../services/groupsApiService";
 
-const CreateGroup = ({ onClose, groupsList, fetchData }) => {
+const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
   const [color, setColor] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({});
@@ -34,7 +34,8 @@ const CreateGroup = ({ onClose, groupsList, fetchData }) => {
   };
 
   const handleSuccesful = async () => {
-    await fetchData();
+    console.log("pase en sucessful");
+    await fetchDataGroups();
     onClose();
   };
 
@@ -62,16 +63,8 @@ const CreateGroup = ({ onClose, groupsList, fetchData }) => {
           selectedColor = defaultColor();
           setColor(selectedColor);
         }
-
-        const resp = await fetch("http://localhost:3000/groups/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: name, color: selectedColor }),
-        });
-        const data = await resp.json();
-        console.log(data);
+        const resp = await createGroup({ name: name, color: selectedColor });
+        console.log("🚀 ~ handlePostGroup ~ resp:", resp);
         setColor("");
         setName("");
         setErrors({});

@@ -6,6 +6,8 @@ const CustomButton = ({ children, className, variant, size, ...props }) => {
       primary: "bg-primary-brown text-white border hover:bg-third-brown",
       secondary:
         " bg-white text-primary-brown border border-secondary-black focus:text-white focus:bg-primary-brown",
+
+      third: "bg-primary-brown text-white border hover:bg-third-brown",
       success: "bg-green-500 text-white hover:bg-green-700",
       danger: "bg-red-500 text-white hover:bg-red-700",
     }[variant] || "bg-primary-brown text-white hover:bg-third-brown";
