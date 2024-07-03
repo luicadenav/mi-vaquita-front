@@ -7,6 +7,7 @@ import Groups from "./pages/Groups";
 import Login from "./pages/Login";
 import GroupDetail from "./pages/GroupDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/Register";
 
 const App = () => {
   const location = useLocation();
@@ -22,6 +23,8 @@ const App = () => {
       ),
     },
     { path: "/login", element: <Login /> },
+    { path: "/register", element: <Register /> },
+
     {
       path: "/friends",
       element: (

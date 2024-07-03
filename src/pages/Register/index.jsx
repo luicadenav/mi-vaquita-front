@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import CustomInput from "../../components/CustomInput.jsx";
 import CustomButton from "../../components/CustomButton.jsx";
-import { login } from "../../services/authApiService.js";
+import { createUser } from "../../services/authApiService.js";
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+  console.log("🚀 ~ Register ~ errors:", errors);
   const [body, setBody] = useState({
+    name: "",
     email: "",
     password: "",
+    password2: "",
   });
 
   useEffect(() => {
@@ -20,27 +23,44 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
-    if (error.trim() != "") {
-      setError("");
-    }
     const { name, value } = e.target;
     setBody((body) => ({ ...body, [name]: value }));
   };
 
+  useEffect(() => {
+    console.log(body.password.trim() != "");
+    const newError = {};
+    if (
+      body.password.trim() != "" &&
+      body.password.trim() != "" &&
+      body.password != body.password2
+    ) {
+      newError.samePass = "contraseñas no coinciden";
+    } else if (
+      body.password.trim() != "" &&
+      body.password.trim() != "" &&
+      body.password == body.password2
+    ) {
+      newError.samePass = "contraseñas identicas";
+    }
+    setErrors(newError);
+  }, [body]);
+
   const handlePost = async () => {
     setIsLoading(true);
     try {
-      const response = await login(body);
+      const response = await createUser(body);
+      console.log("🚀 ~ handlePost ~ response:", response);
 
-      if (response.token) {
+      /*  if (response.token) {
         sessionStorage.setItem("token", response.token);
         navigate("/");
       } else {
         setError("Correo ó contraseña inválida");
-      }
+      } */
     } catch (error) {
       console.error("Error al iniciar sesion", error);
-      setError("Algo salió mal intenta de nuevo");
+      //setErrors();
     } finally {
       setIsLoading(false);
     }
@@ -52,13 +72,23 @@ function Login() {
         <img src="/images/logo_login.svg" alt="" srcset="" />
       </div>
       <h2 className=" text-third-brown font-fredoka font-semibold text-2xl text-center my-10">
-        iniciar sesión
+        Registro
       </h2>
+      <CustomInput
+        className=""
+        type="text"
+        name="name"
+        placeholder="Nombre"
+        onChange={handleInputChange}
+        maxLength="100"
+        minLength="3"
+        iconPath="/icons/user.png"
+      />
       <CustomInput
         className=""
         type="email"
         name="email"
-        placeholder="Correo"
+        placeholder="Correo electrónico"
         onChange={handleInputChange}
         maxLength="100"
         minLength="3"
@@ -74,35 +104,27 @@ function Login() {
         minLength="8"
         iconPath="/icons/key.svg"
       />
+      <CustomInput
+        className="mt-12"
+        type="password"
+        name="password2"
+        placeholder="Confirmar contraseña"
+        onChange={handleInputChange}
+        maxLength="100"
+        minLength="8"
+        iconPath="/icons/key.svg"
+      />
 
-      {error && (
+      {errors.samePass && (
         <span className="text-red-error font-fredoka block font-semibold text-center mx-auto}">
-          {error}
+          {errors.samePass}
         </span>
       )}
       <CustomButton
-        className={"mt-12 w-full"}
+        className={"mt-4 w-full"}
         variant={"primary"}
         size={"medium"}
         onClick={handlePost}
-      >
-        {isLoading ? (
-          <ReactLoading
-            type={"bars"}
-            color="#fff"
-            height={25}
-            width={25}
-            className="mx-auto"
-          />
-        ) : (
-          "ingresar"
-        )}
-      </CustomButton>
-      <CustomButton
-        className={"mt-4 w-full"}
-        variant={"secondary"}
-        size={"medium"}
-        onClick={() => navigate("/register")}
       >
         Registrarme
       </CustomButton>
@@ -110,4 +132,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

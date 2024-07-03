@@ -10,3 +10,14 @@ export async function login(body) {
   });
   return await response.json();
 }
+
+export async function createUser(body) {
+  const response = await fetch(`${BASE_URL}/users/`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+}

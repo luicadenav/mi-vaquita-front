@@ -19,7 +19,7 @@ const CustomButton = ({ children, className, variant, size, ...props }) => {
       large: "text-lg",
     }[size] || "text-sm";
 
-  const fullClassName = `w-full px-4 py-2 rounded-md font-bold focus:outline-none focus:ring-2 focus:ring-secondary-yellow focus:ring-opacity-50 ${variantClass} ${sizeClass} ${className}`;
+  const fullClassName = `px-4 py-2 rounded-md font-bold focus:outline-none focus:ring-2 focus:ring-secondary-yellow focus:ring-opacity-50 ${variantClass} ${sizeClass} ${className}`;
 
   return (
     <button className={fullClassName} {...props}>
