@@ -4,45 +4,61 @@ import CustomButton from "../../components/CustomButton.jsx";
 import { login } from "../../services/authApiService.js";
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
+import { loginSchema } from "../../validations/loginValidations.js";
 
 function Login() {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
   const [body, setBody] = useState({
     email: "",
     password: "",
   });
 
-  useEffect(() => {
-    console.log("🚀 ~ Login ~ body:", body);
-  }, [body]);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
-    if (error.trim() != "") {
-      setError("");
-    }
+    setErrors({});
     const { name, value } = e.target;
     setBody((body) => ({ ...body, [name]: value }));
   };
 
   const handlePost = async () => {
-    setIsLoading(true);
-    try {
-      const response = await login(body);
-
-      if (response.token) {
-        sessionStorage.setItem("token", response.token);
-        navigate("/");
-      } else {
-        setError("Correo ó contraseña inválida");
+    const newErrors = {};
+    const { email, password } = body;
+    const { error, value } = loginSchema.validate(
+      {
+        email,
+        password,
+      },
+      {
+        abortEarly: false,
       }
-    } catch (error) {
-      console.error("Error al iniciar sesion", error);
-      setError("Algo salió mal intenta de nuevo");
-    } finally {
-      setIsLoading(false);
+    );
+    if (error) {
+      console.log("🚀 ~ handlePost ~ error:", error.details);
+      const newError = error.details.map((detail) => detail.message);
+      newErrors.fieldsErrors = newError;
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      setIsLoading(true);
+      try {
+        const response = await login(body);
+
+        if (response.token) {
+          sessionStorage.setItem("token", response.token);
+          setErrors({});
+          navigate("/");
+        } else {
+          setErrors({ errorLogin: "Correo o contraseña incorrecto" });
+        }
+      } catch (error) {
+        setErrors({ errorLogin: "Error al iniciar sesion" });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -75,10 +91,22 @@ function Login() {
         iconPath="/icons/key.svg"
       />
 
-      {error && (
+      {errors.errorLogin && (
         <span className="text-red-error font-fredoka block font-semibold text-center mx-auto}">
-          {error}
+          {errors.errorLogin}
         </span>
+      )}
+      {errors.fieldsErrors && (
+        <div className="text-red-error font-fredoka block font-semibold text-left mx-auto">
+          <p>Error:</p>
+          <ul>
+            {errors.fieldsErrors.map((error, index) => (
+              <li key={index} className="text-red-error font-fredoka text-left">
+                &bull; {error}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       <CustomButton
         className={"mt-12 w-full"}

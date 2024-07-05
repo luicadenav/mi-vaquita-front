@@ -38,7 +38,6 @@ function Register() {
       }
     );
     if (error) {
-      console.log("🚀 ~ handlePost ~ error:", error.details);
       const errorFields = error.details.map((detail) => detail.message);
       newErrors.fieldsErrors = errorFields;
     }
@@ -48,7 +47,7 @@ function Register() {
     } else {
       try {
         const response = await createUser(body);
-        console.log("🚀 ~ handlePost ~ response:", response);
+
         if (response.status == 201) {
           newErrors.success = "usuario creado con éxito";
           setTimeout(() => {
