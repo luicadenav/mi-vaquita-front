@@ -4,11 +4,11 @@ import CustomButton from "../../components/CustomButton.jsx";
 import { createUser } from "../../services/authApiService.js";
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
+import { registerSchema } from "../../validations/registerValidations.js";
 
 function Register() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  console.log("🚀 ~ Register ~ errors:", errors);
   const [body, setBody] = useState({
     name: "",
     email: "",
@@ -16,53 +16,53 @@ function Register() {
     password2: "",
   });
 
-  useEffect(() => {
-    console.log("🚀 ~ Login ~ body:", body);
-  }, [body]);
-
   const [isLoading, setIsLoading] = useState(false);
-
+  //pass132L*
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBody((body) => ({ ...body, [name]: value }));
   };
 
-  useEffect(() => {
-    console.log(body.password.trim() != "");
-    const newError = {};
-    if (
-      body.password.trim() != "" &&
-      body.password.trim() != "" &&
-      body.password != body.password2
-    ) {
-      newError.samePass = "contraseñas no coinciden";
-    } else if (
-      body.password.trim() != "" &&
-      body.password.trim() != "" &&
-      body.password == body.password2
-    ) {
-      newError.samePass = "contraseñas identicas";
-    }
-    setErrors(newError);
-  }, [body]);
-
   const handlePost = async () => {
-    setIsLoading(true);
-    try {
-      const response = await createUser(body);
-      console.log("🚀 ~ handlePost ~ response:", response);
+    const newErrors = {};
+    const { name, email, password, password2 } = body;
+    const { error, value } = registerSchema.validate(
+      {
+        name,
+        email,
+        password,
+        password2,
+      },
+      {
+        abortEarly: false,
+      }
+    );
+    if (error) {
+      console.log("🚀 ~ handlePost ~ error:", error.details);
+      const errorFields = error.details.map((detail) => detail.message);
+      newErrors.fieldsErrors = errorFields;
+    }
 
-      /*  if (response.token) {
-        sessionStorage.setItem("token", response.token);
-        navigate("/");
-      } else {
-        setError("Correo ó contraseña inválida");
-      } */
-    } catch (error) {
-      console.error("Error al iniciar sesion", error);
-      //setErrors();
-    } finally {
-      setIsLoading(false);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      try {
+        const response = await createUser(body);
+        console.log("🚀 ~ handlePost ~ response:", response);
+        if (response.status == 201) {
+          newErrors.success = "usuario creado con éxito";
+          setTimeout(() => {
+            navigate("/login");
+          }, 2500);
+        } else if (response.status == 409) {
+          newErrors.email = "Este correo ya existe";
+        }
+        setErrors(newErrors);
+      } catch (error) {
+        console.error("Error al iniciar sesion", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -94,6 +94,11 @@ function Register() {
         minLength="3"
         iconPath="/icons/user.png"
       />
+      {errors.email && (
+        <span className="text-red-error font-fredoka block font-semibold text-center mx-auto}">
+          {errors.email}
+        </span>
+      )}
       <CustomInput
         className="mt-12"
         type="password"
@@ -114,19 +119,52 @@ function Register() {
         minLength="8"
         iconPath="/icons/key.svg"
       />
-
-      {errors.samePass && (
-        <span className="text-red-error font-fredoka block font-semibold text-center mx-auto}">
-          {errors.samePass}
+      {errors.success && (
+        <span className="text-green-sucess font-fredoka block font-semibold text-center mx-auto}">
+          {errors.success}
         </span>
       )}
+      {errors.passStrength && (
+        <div className="text-red-error font-fredoka block font-semibold text-left mx-auto">
+          <p>Error:</p>
+          <ul>
+            {errors.passStrength.map((error, index) => (
+              <li key={index} className="text-red-error font-fredoka text-left">
+                &bull; {error}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {errors.fieldsErrors && (
+        <div className="text-red-error font-fredoka block font-semibold text-left mx-auto">
+          <ul>
+            {errors.fieldsErrors.map((error, index) => (
+              <li key={index} className="text-red-error font-fredoka text-left">
+                &bull; {error}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <CustomButton
         className={"mt-4 w-full"}
         variant={"primary"}
         size={"medium"}
         onClick={handlePost}
       >
-        Registrarme
+        {isLoading ? (
+          <ReactLoading
+            type={"bars"}
+            color="#fff"
+            height={25}
+            width={25}
+            className="mx-auto"
+          />
+        ) : (
+          "Registrarme"
+        )}
       </CustomButton>
     </main>
   );

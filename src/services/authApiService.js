@@ -12,12 +12,16 @@ export async function login(body) {
 }
 
 export async function createUser(body) {
-  const response = await fetch(`${BASE_URL}/users/`, {
+  const response = await fetch(`${BASE_URL}users/`, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      name: body.name,
+      email: body.email,
+      password: body.password,
+    }),
     headers: {
       "Content-Type": "application/json",
     },
   });
-  return await response.json();
+  return response;
 }
