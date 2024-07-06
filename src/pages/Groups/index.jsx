@@ -44,7 +44,7 @@ const Groups = () => {
       </CustomButton>
       <p className="pl-6 text-secondary-black font-bold text-base ">Debes</p>
       <p className="pl-6 text-red-error font-bold text-2xl mb-8">$45.000</p>
-      <GroupsList groupsList={groups} />
+      <GroupsList groupsList={groups} fetchDataGroups={fetchDataGroups} />
     </div>
   );
 };

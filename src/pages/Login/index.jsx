@@ -50,7 +50,7 @@ function Login() {
         if (response.token) {
           sessionStorage.setItem("token", response.token);
           setErrors({});
-          navigate("/");
+          navigate("/groups");
         } else {
           setErrors({ errorLogin: "Correo o contraseña incorrecto" });
         }

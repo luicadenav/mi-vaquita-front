@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { createGroup } from "../services/groupsApiService";
-
 import CustomButton from "../components/CustomButton";
+import CustomInput from "../components/CustomInput";
+import ReactLoading from "react-loading";
 
 const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
   const [color, setColor] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const colorsGroup = [
     "#A75293",
@@ -59,6 +61,7 @@ const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
+      setIsLoading(true);
       try {
         let selectedColor = color;
         if (!selectedColor) {
@@ -66,38 +69,58 @@ const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
           setColor(selectedColor);
         }
         const resp = await createGroup({ name: name, color: selectedColor });
-        console.log("🚀 ~ handlePostGroup ~ resp:", resp);
-        setColor("");
-        setName("");
-        setErrors({});
-        handleSuccesful();
+        if (resp.name) {
+          setColor("");
+          setName("");
+          setErrors({});
+          handleSuccesful();
+        } else {
+          setErrors({ errorCreate: "Error al crear grupo" });
+        }
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
   return (
-    <div className="bg-white w-90vw max-w-400px rounded-lg flex flex-col items-center">
-      <button onClick={onClose}>X</button>
-      <h2>Nuevo Grupo</h2>
-      <input
+    <div className="bg-white rounded-lg flex  flex-col items-center px-4 ">
+      <button
+        onClick={onClose}
+        className="block ml-auto text-secondary-black font-bold"
+      >
+        X
+      </button>
+      <h2 className="text-2xl text-primary-brown font-bold mb-4 text-center">
+        Nuevo Grupo
+      </h2>
+      <CustomInput
+        className="mb-6 w-full"
         type="text"
-        placeholder="Nombre del grupo"
         name="name"
-        value={name}
+        placeholder="Nombre del grupo"
         onChange={handleInputChange}
+        maxLength="100"
+        minLength="3"
+        iconPath="/icons/people.svg"
       />
-      <div className="border border-secondary-gray rounded-none grid grid-cols-4 grid-rows-2">
+      <div className="border p-3 w-full mb-6 gap-2 border-secondary-gray rounded-md grid grid-cols-4 grid-rows-2">
         {colorsGroup.map((colorDiv, index) => (
           <div
+            className="mx-auto rounded-md"
             key={index}
             style={{
               backgroundColor: colorDiv,
-              width: "40px",
-              height: "40px",
-              margin: "10px",
-              border: colorDiv === color ? "2px solid gray" : "none",
+              width: "47px",
+              height: "45px",
+              border:
+                colorDiv === color
+                  ? "2px solid black"
+                  : colorDiv === "#FFFFFE"
+                  ? "2px solid lightgray"
+                  : `2px solid ${colorDiv}`,
               cursor: "pointer",
             }}
             name="color"
@@ -105,10 +128,29 @@ const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
           ></div>
         ))}
       </div>
-      <button type="button" onClick={() => handlePostGroup()}>
-        crear
-      </button>
+
+      <CustomButton
+        className={" w-full"}
+        variant={"primary"}
+        size={"large"}
+        onClick={handlePostGroup}
+      >
+        {isLoading ? (
+          <ReactLoading
+            type={"bars"}
+            color="#fff"
+            height={25}
+            width={25}
+            className="mx-auto"
+          />
+        ) : (
+          "Crear"
+        )}
+      </CustomButton>
       {errors && <span className="text-red-error">{errors.name}</span>}
+      {errors.errorCreate && (
+        <span className="text-red-error">{errors.errorCreate}</span>
+      )}
     </div>
   );
 };

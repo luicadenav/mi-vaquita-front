@@ -1,13 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import Logo from "/images/logo_groups.svg";
 import CustomButton from "../components/CustomButton";
+import { deleteGroup } from "../services/groupsApiService";
 
-const GroupCard = ({ groupData }) => {
+const GroupCard = ({ groupData, fetchDataGroups }) => {
   const navigate = useNavigate();
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  const handleDelete = async () => {
+    try {
+      await deleteGroup(groupData.id);
+      await fetchDataGroups();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex gap-7 border-b-2 max-w-[400px] shadow-card-shadow p-4 w-full mx-auto">
@@ -33,7 +42,7 @@ const GroupCard = ({ groupData }) => {
             className={""}
             variant={"primary"}
             size={"small"}
-            onClick={() => navigate(`/groups/${groupData.id}`)}
+            onClick={handleDelete}
           >
             Abandonar
           </CustomButton>

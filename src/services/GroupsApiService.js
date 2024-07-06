@@ -20,3 +20,14 @@ export async function createGroup(body) {
   });
   return await response.json();
 }
+
+export async function deleteGroup(id) {
+  const response = await fetch(`${BASE_URL}groups/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.status == 204;
+}
