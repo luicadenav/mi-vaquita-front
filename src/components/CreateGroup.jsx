@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { createGroup } from "../services/groupsApiService";
 
+import CustomButton from "../components/CustomButton";
+
 const CreateGroup = ({ onClose, groupsList, fetchDataGroups }) => {
   const [color, setColor] = useState("");
   const [name, setName] = useState("");

@@ -150,7 +150,7 @@ function Register() {
       <CustomButton
         className={"mt-4 w-full"}
         variant={"primary"}
-        size={"medium"}
+        size={"large"}
         onClick={handlePost}
       >
         {isLoading ? (

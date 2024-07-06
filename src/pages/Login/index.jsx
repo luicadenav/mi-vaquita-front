@@ -111,7 +111,7 @@ function Login() {
       <CustomButton
         className={"mt-12 w-full"}
         variant={"primary"}
-        size={"medium"}
+        size={"large"}
         onClick={handlePost}
       >
         {isLoading ? (
@@ -129,7 +129,7 @@ function Login() {
       <CustomButton
         className={"mt-4 w-full"}
         variant={"secondary"}
-        size={"medium"}
+        size={"large"}
         onClick={() => navigate("/register")}
       >
         Registrarme

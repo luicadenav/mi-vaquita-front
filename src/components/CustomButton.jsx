@@ -14,12 +14,12 @@ const CustomButton = ({ children, className, variant, size, ...props }) => {
 
   const sizeClass =
     {
-      small: "text-xs",
-      medium: "text-sm",
-      large: "text-lg",
-    }[size] || "text-sm";
+      small: "text-xs font-medium px-4 py-1 min-w-20",
+      medium: "text-sm font-bold px-4 py-2",
+      large: "text-sm font-semibold px-4 py-2 ",
+    }[size] || "text-sm  font-bold px-4 py-2";
 
-  const fullClassName = `px-4 py-2 rounded-md font-bold focus:outline-none focus:ring-2 focus:ring-secondary-yellow focus:ring-opacity-50 ${variantClass} ${sizeClass} ${className}`;
+  const fullClassName = `rounded-md  focus:outline-none focus:ring-2 focus:ring-secondary-yellow focus:ring-opacity-50 ${variantClass} ${sizeClass} ${className}`;
 
   return (
     <button className={fullClassName} {...props}>

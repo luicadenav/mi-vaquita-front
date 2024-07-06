@@ -3,6 +3,7 @@ import GroupsList from "../../components/GroupList.jsx";
 import CreateGroup from "../../components/CreateGroup.jsx";
 import Modal from "../../components/Modal.jsx";
 import { getGroups } from "../../services/groupsApiService";
+import CustomButton from "../../components/CustomButton.jsx";
 
 const Groups = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
@@ -22,7 +23,7 @@ const Groups = () => {
   }, []);
 
   return (
-    <div>
+    <div className="p-3 flex-col">
       <Modal
         isOpenModal={openModalForm}
         onClose={() => setOpenModalForm(false)}
@@ -33,10 +34,16 @@ const Groups = () => {
           fetchDataGroups={fetchDataGroups}
         />
       </Modal>
-
-      <button onClick={() => setOpenModalForm(true)}>Nuevo grupo</button>
-      <p>debes</p>
-      <p>45000</p>
+      <CustomButton
+        className={"ml-auto block"}
+        variant={"primary"}
+        size={"medium"}
+        onClick={() => setOpenModalForm(true)}
+      >
+        Nuevo grupo
+      </CustomButton>
+      <p className="pl-6 text-secondary-black font-bold text-base ">Debes</p>
+      <p className="pl-6 text-red-error font-bold text-2xl mb-8">$45.000</p>
       <GroupsList groupsList={groups} />
     </div>
   );

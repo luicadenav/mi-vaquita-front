@@ -15,6 +15,9 @@ export default {
         "red-error": "#FF2530",
         "green-sucess": "#66B04C",
       },
+      boxShadow: {
+        "card-shadow": "0px 4px 4px 0px #00000040",
+      },
     },
   },
   plugins: [],
